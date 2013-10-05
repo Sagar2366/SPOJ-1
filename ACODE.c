@@ -3,7 +3,8 @@
    defined in spoj/acode, finds out the possible number of 
    decryptions.
 */
-int isWithin(int a, int b){
+
+int isWithin(int a, int b){  /* returns 1 if ab is a valid alphabet, 0 otherwise */
   int num;
   num = 10*a + b;
   if(num <= 26) return 1;
@@ -13,19 +14,26 @@ int isWithin(int a, int b){
 int main(){
   
   char c;
-  int i;		/* current digit */
+  int i;		/* current digit  */
   int back=0;           /* previous digit */
   int pwback=1;         /* number of ways till one digit  back */
   int pwbackback=0;     /* number of ways till two digits back */
   int pw=1;             /* number of ways overall */
 
   while(1){
-		c = getchar();	
-		if (c=='0') break;
+		c = getchar();
+		if (c == '0') break;
 		while (c != '\n'){
 			i = c - '0';
-			if (isWithin(back,i)) pw = pwback + pwbackback;
-			else pw = pwback;
+			if (i){
+				if (back == 0) pw = pwback;
+				else if (isWithin(back,i)) pw = pwback + pwbackback;
+				else pw = pwback;
+			}
+			// else account for 0s
+			else{
+  			  pw = pwbackback;
+  			}
 			back = i;
 			pwbackback = pwback;
 			pwback = pw;
